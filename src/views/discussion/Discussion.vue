@@ -1,9 +1,9 @@
 <template>
     <el-container>
-        <el-main style="width: 70%; height: 100%">
-            <el-card class="box-card" style="width: 99%; ">
+        <el-main style="width: 70%; height: 100%;">
+            <el-card class="box-card" style="width: 99%;">
                 <div>
-                    <el-input style="width: 50%"></el-input>&nbsp;
+                    <el-input style="width: 50%" v-model="findcontent"></el-input>&nbsp;
                     <el-button type="primary">搜索</el-button>
                     <el-button type="primary" @click="toAdd">发布问题</el-button>
                 </div>
@@ -23,14 +23,23 @@
         </el-main>
         <el-aside style="width: 30%">
             <el-main>
-                <el-card class="box-card" style="width: 99%">
+                <el-card class="box-card" style="width: 99%;height: 350px">
                     <div slot="header" class="clearfix">
-                        <span>卡片名称</span>
-                        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                        <span>最近点赞</span>
+                        <el-button style="float: right; padding: 3px 0" type="text">查看更多</el-button>
                     </div>
-                    <div v-for="o in 4" :key="o" class="text item">
-                        {{'列表内容 ' + o }}
+                    <el-card v-for="dis in thumbDis" shadow="false" @click.native="toPage(dis.id)">
+                        {{dis.title}}
+                    </el-card>
+                </el-card>
+                <el-card class="box-card" style="width: 99%; height: 340px">
+                    <div slot="header" class="clearfix">
+                        <span >最近收藏</span>
+                        <el-button style="float: right; padding: 3px 0" type="text">查看更多</el-button>
                     </div>
+                    <el-card v-for="dis in starDis" shadow="false" @click.native="toPage(dis.id)">
+                        {{dis.title}}
+                    </el-card>
                 </el-card>
             </el-main>
         </el-aside>
@@ -54,7 +63,11 @@ export default {
                 'align-items': 'center',
                 'justify-content': 'center',
                 'width': '100%'
-            }
+            },
+            findcontent: null,
+            userid: JSON.parse(window.localStorage.getItem('access-admin')).uid,
+            starDis: [],
+            thumbDis: [],
         };
     },
     methods: {
@@ -70,6 +83,10 @@ export default {
         },
         toAdd(){
             this.$router.push({path: "/addDiscussion"})
+        },
+        toPage(id){
+            this.$router.push("/reply?discussionid="+id).catch(err => {
+            })
         }
     },
     created() {
@@ -77,6 +94,20 @@ export default {
         axios.get('http://localhost:8181/subject/findAll').then(function (resp){
             _this.items = resp.data
             _this.items.reverse()
+        })
+        axios.get("http://localhost:8181/star_dis/findDiscussion/"+this.userid).then(function (resp){
+            resp.data.reverse()
+            for (let i = 0; i < 4; i++){
+                if(i < resp.data.length)
+                    _this.starDis.push(resp.data[i])
+            }
+        })
+        axios.get("http://localhost:8181/thumb_dis/findDiscussion/"+this.userid).then(function (resp){
+            resp.data.reverse()
+            for (let i = 0; i < 4; i++){
+                if(i < resp.data.length)
+                    _this.thumbDis.push(resp.data[i])
+            }
         })
     }
 }

@@ -7,6 +7,8 @@ import './plugins/element.js'
 import AddActivity from "./views/AddActivity";
 import Login from "./views/Login";
 import Register from "./views/Register";
+import moment from 'moment'
+Vue.prototype.$moment = moment
 
 Vue.config.productionTip = false
 
@@ -32,11 +34,11 @@ router.beforeEach((to, from, next) => {
           token:admin.token
         }
       }).then((resp) => {
-        console.log(resp.data)
+        // console.log(resp.data)
         if(!resp.data){
           alert("身份已过期")
-          this.$router.go(0)
           next({path:'/login'})
+
         }
       })
       next()

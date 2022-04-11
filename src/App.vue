@@ -1,7 +1,7 @@
 <template>
     <div id="app">
-        <el-container>
-            <el-header style="height: 100px">
+        <div>
+            <el-header style="height: 100px; width: 100%">
                 <el-menu
                     :default-active="activeIndex2"
                     class="el-menu-demo"
@@ -70,14 +70,14 @@
             <el-container>
                 <el-aside style="width: 10%"></el-aside>
                 <el-main style="width: 80%">
-                    <router-view></router-view>
+                    <router-view v-if="isShow"></router-view>
                 </el-main>
                 <el-aside style="width: 10%"></el-aside>
             </el-container>
             <el-footer>
 
             </el-footer>
-        </el-container>
+        </div>
     </div>
 </template>
 
@@ -85,7 +85,8 @@
 export default {
     provide() {
         return {
-            reload: this.reload
+            reload: this.reload,
+            isShow:true
         }
     },
     data() {
@@ -99,9 +100,10 @@ export default {
                 'align-items': 'center',
                 'justify-content': 'center',
             },
-            circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+            circleUrl: null,
             flag: true,
-            admin:''
+            admin:'',
+            isShow:true
         };
     },
     methods: {
@@ -115,10 +117,14 @@ export default {
         },
         exit(){
             window.localStorage.removeItem('access-admin')
-            window.localStorage.removeItem('school')
-            window.localStorage.removeItem('uid')
             this.$router.push('/')
             this.$router.go(0)
+        },
+        reload(){
+            this.isShow=false;
+            this.$nextTick(()=>{
+                this.isShow=true
+            })
         }
     },
     created() {
@@ -129,6 +135,7 @@ export default {
         }
         else{
             this.flag=true
+            this.circleUrl=admin.avatar
         }
     }
 }
@@ -143,11 +150,14 @@ export default {
     font-size: 12px;
 }
 #app {
+    min-height: 880px;
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
+    background:url("assets/background.png");
+    background-size: cover;
 }
 
 #nav {
@@ -167,4 +177,12 @@ export default {
 /*#nav a.router-link-exact-active {*/
 /*    color: #42b983;*/
 /*}*/
+
+#building{
+    background:url("assets/background.png");
+    width:100%;
+    height:100%;
+    position:fixed;
+    background-size:100% 100%;
+}
 </style>

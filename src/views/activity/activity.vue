@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>活动</h1>
+        <h1>活动参与</h1>
         <div class="manip-header" style="margin-left: 10px">
             <el-form
                 :inline="true"
@@ -64,12 +64,7 @@
             border
             style="width: 98%"
             :row-style=rowstyle>
-            <el-table-column
-                fixed
-                prop="id"
-                label="编号"
-                width="100%">
-            </el-table-column>
+
             <el-table-column
                 prop="title"
                 label="标题"
@@ -78,7 +73,7 @@
             <el-table-column
                 prop="location"
                 label="活动地点"
-                width="200%">
+                width="150%">
             </el-table-column>
             <el-table-column
                 prop="postname"
@@ -100,18 +95,18 @@
                 prop="join_start"
                 label="报名开始时间"
                 :formatter="formatDate"
-                width="200%">
+                width="150%">
             </el-table-column>
             <el-table-column
                 prop="join_end"
                 label="报名结束时间"
                 :formatter="formatDate"
-                width="200%">
+                width="150%">
             </el-table-column>
             <el-table-column
                 prop="state"
                 label="状态"
-                width="150%">
+                width="100%">
             </el-table-column>
             <el-table-column
                 prop="look"
@@ -278,13 +273,16 @@ export default {
             const _this = this
             console.log(_this.formInline.range+_this.formInline.state)
             if(_this.formInline.range==undefined)alert("请选择范围");
+            // if(_this.formInline.range==undefined)_this.formInline.range="*";
             if(_this.formInline.state==undefined)alert("请选择状态");
+            // if(_this.formInline.state==undefined)_this.formInline.state="*";
             axios.get('http://localhost:8181/activity/findAll/1/'+this.pagesize+'/'+_this.formInline.range+'/'
                 +_this.formInline.state).then(function (resp) {
                 // console.log(resp)
                 _this.tableData = resp.data.content
                 _this.total = resp.data.totalElements
             })
+
         },
         page(currentPage){
             const _this = this
@@ -389,8 +387,8 @@ export default {
             //         alert('失败')
             //     }
             // })
-            alert(_this.form.title+_this.form.content+_uname+_this.form.location+_this.form.range)
-            alert(_this.form1.acttype+_this.form1.join_start+_this.form1.join_end+_this.form1.act_start+_this.form1.act_end)
+            // alert(_this.form.title+_this.form.content+_uname+_this.form.location+_this.form.range)
+            // alert(_this.form1.acttype+_this.form1.join_start+_this.form1.join_end+_this.form1.act_start+_this.form1.act_end)
         },
         jos(){
             let _this = this
@@ -502,6 +500,10 @@ export default {
                 {
                     name:"规划中",
                     value:"规划中",
+                },
+                {
+                    name:"全部",
+                    value:"*",
                 }
             ],
             actOptions:[],

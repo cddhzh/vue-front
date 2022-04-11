@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>通知</h1>
+        <h1>重要公告</h1>
         <div class="manip-header" style="margin-left: 10px">
             <el-form
                 :inline="true"
@@ -41,15 +41,9 @@
             style="width: 85%; margin: auto;"
             :row-style="rowstyle">
             <el-table-column
-                fixed
-                prop="id"
-                label="编号"
-                width="150">
-            </el-table-column>
-            <el-table-column
                 prop="name"
                 label="标题"
-                width="650">
+                width="550">
             </el-table-column>
             <el-table-column
                 prop="school"
@@ -103,7 +97,7 @@ export default {
     methods:{
         page(currentPage){
             const _this = this
-            axios.get('http://localhost:8181/notice/findById/'+currentPage+'/'+_thid.pagesize,{params:_this.formInline}).then(function (resp) {
+            axios.get('http://localhost:8181/notice/findById/'+currentPage+'/'+_this.pagesize,{params:_this.formInline}).then(function (resp) {
                 // console.log(resp)
                 _this.tableData = resp.data.content
                 _this.total = resp.data.totalElements
@@ -133,7 +127,7 @@ export default {
             formInline: {},
             form: {},
             schoolOptions:[],
-            pagesize: 4,
+            pagesize: 3,
             rowstyle: {
                 height: '100px'
             }

@@ -22,6 +22,7 @@ import Notice from "../views/notice/notice";
 import myAct from "../views/activity/myact";
 import joinAct from "../views/activity/joinAct";
 import quitAct from "../views/activity/quitAct";
+import upload from "../views/upload";
 
 Vue.use(VueRouter)
 
@@ -110,6 +111,10 @@ const routes = [
   {
     path: '/quitAct',
     component: quitAct
+  },
+  {
+    path: '/upload',
+    component: upload
   }
 ]
 

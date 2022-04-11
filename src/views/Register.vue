@@ -2,6 +2,20 @@
     <div align="center">
         <el-card class="box-card">
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="头像" prop="avatar">
+                    <el-upload
+                        ref="upload"
+                        class="avatar-uploader"
+                        :auto-upload="false"
+                        action="http://localhost:8181/upload/file/avatar"
+                        :show-file-list="false"
+                        :on-change="handleChange"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload">
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
                 <el-form-item label="用户名" prop="account">
                     <el-input v-model="ruleForm.account" autocomplete="off"></el-input>
                 </el-form-item>
@@ -124,8 +138,9 @@ export default {
                 account: '',
                 academy: '',
                 checkPass:'',
+                avatar:''
             },
-
+            imageUrl: '',
             schools: [],
             academys: [],
             accounts: [],
@@ -164,6 +179,9 @@ export default {
                 academy: [
                     { required: true, message: '请输入学校名称', trigger: 'blur' }
                 ],
+                avatar: [
+                    { required: true, message: '请上传头像', trigger: 'blur' }
+                ],
             }
         };
     },
@@ -185,6 +203,7 @@ export default {
     methods: {
         submitForm(formName) {
             const _this = this
+            this.$refs.upload.submit();
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     axios.post('http://localhost:8181/user/save/', _this.ruleForm).then(function (resp){
@@ -204,7 +223,26 @@ export default {
             axios.get('http://localhost:8181/academy/findBySchool/'+this.ruleForm.school).then(function (resp){
                 _this.academys = resp.data
             })
-        }
+        },
+        handleAvatarSuccess(res, file) {
+            this.ruleForm.avatar = res;
+            console.log(this.ruleForm.avatar)
+        },
+        beforeAvatarUpload(file) {
+            const isJPG = file.type === 'image/jpeg';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+
+            if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+            }
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+            }
+            return isJPG && isLt2M;
+        },
+        handleChange(file, fileList){
+            this.imageUrl = URL.createObjectURL(file.raw);
+        },
     }
 }
 </script>
