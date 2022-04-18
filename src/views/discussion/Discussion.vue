@@ -55,6 +55,7 @@ export default {
     components: {Zone, All},
     data() {
         return {
+            server: '106.14.37.85',
             activeName: 'all',
             items: [],
             divstyle: {
@@ -91,18 +92,18 @@ export default {
     },
     created() {
         const _this = this
-        axios.get('http://localhost:8181/subject/findAll').then(function (resp){
+        axios.get('http://'+this.server+':8181/subject/findAll').then(function (resp){
             _this.items = resp.data
             _this.items.reverse()
         })
-        axios.get("http://localhost:8181/star_dis/findDiscussion/"+this.userid).then(function (resp){
+        axios.get("http://"+this.server+":8181/star_dis/findDiscussion/"+this.userid).then(function (resp){
             resp.data.reverse()
             for (let i = 0; i < 4; i++){
                 if(i < resp.data.length)
                     _this.starDis.push(resp.data[i])
             }
         })
-        axios.get("http://localhost:8181/thumb_dis/findDiscussion/"+this.userid).then(function (resp){
+        axios.get("http://"+this.server+":8181/thumb_dis/findDiscussion/"+this.userid).then(function (resp){
             resp.data.reverse()
             for (let i = 0; i < 4; i++){
                 if(i < resp.data.length)

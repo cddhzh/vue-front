@@ -108,12 +108,13 @@ import Goods from "./Goods";
 export default {
   data() {
     return {
+        server: '106.14.37.85',
       items: [
           { value: "问题讨论", url: "/discussion" },
           { value: "二手交易", url: "/transaction/goods" },
           { value: "资料共享", url: null },
-          { value: "活动", url: "/activity" },
-          { value: "通知",url: "/notice" },
+          { value: "活动参与", url: "/activity" },
+          { value: "重要公告",url: "/notice" },
           { value: "技术分享", url: null }
       ],
         notices: [],
@@ -123,7 +124,7 @@ export default {
   },
     created() {
         const _this = this
-        axios.get("http://localhost:8181/notice/findAllNotice").then(function (resp){
+        axios.get("http://"+this.server+":8181/notice/findAllNotice").then(function (resp){
             resp.data.reverse()
             for (let i = 0; i < 4; i++){
                 if(i == resp.data.length) break
@@ -134,7 +135,7 @@ export default {
                 _this.new_notices.push(resp.data[i])
             }
         })
-        axios.get("http://localhost:8181/discussion/findAllDis").then(function (resp){
+        axios.get("http://"+this.server+":8181/discussion/findAllDis").then(function (resp){
             resp.data.reverse()
             for (let i = 0; i < 4; i++){
                 if(i == resp.data.length) break

@@ -99,7 +99,7 @@ export default {
         if(this.admin==null){
             this.$router.replace({path:'/login'})
         }
-        axios.get('http://localhost:8181/user/findbyid/'+JSON.parse(window.localStorage.getItem('access-admin')).uid).then(function (response) {
+        axios.get('http://'+this.server+':8181/user/findbyid/'+JSON.parse(window.localStorage.getItem('access-admin')).uid).then(function (response) {
             // console.log(response.data)
             _this.ruleForm2 = response.data
             // _this.total = response.data.totalElements
@@ -107,6 +107,7 @@ export default {
     },
     data(){
         return{
+            server: '106.14.37.85',
             ruleForm2: {
 
             },
@@ -130,12 +131,12 @@ export default {
                     let _this = this
                     _this.user.account=_this.ruleForm2.account
                     _this.user.password=_this.form.oldpwd
-                    axios.get('http://localhost:8181/user/find',{params:_this.user}).then(function (resp) {
+                    axios.get('http://'+this.server+':8181/user/find',{params:_this.user}).then(function (resp) {
                         if(resp.data!=""){
                             //sessionStorage.setItem('username',_this.ruleForm2.userName)
                             _this.user=_this.ruleForm2
                             _this.user.password=_this.form.newpwd
-                            axios.get('http://localhost:8181/user/updateUser',{params:_this.user}).then(function (resp) {
+                            axios.get('http://'+_this.server+':8181/user/updateUser',{params:_this.user}).then(function (resp) {
                                 if(resp.data!=""){
                                     alert("更新密码成功")
                                     _this.dialogFormVisible=false

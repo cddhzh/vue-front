@@ -48,6 +48,7 @@
 export default {
     data() {
         return {
+            server: '106.14.37.85',
             form: {
                 id:'',
                 title: '',
@@ -64,7 +65,7 @@ export default {
             this.form.time = new Date();
             this.form.authorID = JSON.parse(window.localStorage.getItem('access-admin')).name
             const _this = this;
-            axios.post("http://localhost:8181/discussion/save", this.form).then(function (resp){
+            axios.post("http://"+this.server+":8181/discussion/save", this.form).then(function (resp){
                 if (resp.data!=null){
                     alert("发布成功！")
                     _this.$router.push({path: "/discussion"})
@@ -80,7 +81,7 @@ export default {
     },
     created() {
         const _this = this
-        axios.get("http://localhost:8181/subject/findAll").then(function (resp){
+        axios.get("http://"+this.server+":8181/subject/findAll").then(function (resp){
             _this.options = resp.data
         })
     }

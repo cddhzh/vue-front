@@ -113,6 +113,7 @@ export default {
     ],
     data(){
         return{
+            server: "106.14.37.85",
             visible: false,
             replys:[],
             discussion: {},
@@ -133,16 +134,16 @@ export default {
     },
     created() {
         const _this = this
-        axios.get("http://localhost:8181/discussion/findByID/"+this.$route.query.discussionid).then(function (resp){
+        axios.get("http://"+this.server+":8181/discussion/findByID/"+this.$route.query.discussionid).then(function (resp){
             _this.discussion = resp.data
         })
-        axios.get('http://localhost:8181/reply/findByDiscussionid/'+this.$route.query.discussionid).then(function (resp){
+        axios.get('http://'+this.server+':8181/reply/findByDiscussionid/'+this.$route.query.discussionid).then(function (resp){
             _this.replys = resp.data
             if(_this.replys[0] != null){
                 _this.isEmpty = false
             }
         })
-        axios.get('http://localhost:8181/star_dis/findById/'+this.$route.query.discussionid+'/'+this.userid).then(function (resp){
+        axios.get('http://'+this.server+':8181/star_dis/findById/'+this.$route.query.discussionid+'/'+this.userid).then(function (resp){
             if(resp.data){
                 _this.star = "primary"
             }
@@ -150,7 +151,7 @@ export default {
                 _this.star = null
             }
         })
-        axios.get('http://localhost:8181/thumb_dis/findById/'+this.$route.query.discussionid+'/'+this.userid).then(function (resp){
+        axios.get('http://'+this.server+':8181/thumb_dis/findById/'+this.$route.query.discussionid+'/'+this.userid).then(function (resp){
             if(resp.data){
                 _this.thumb = "primary"
             }
@@ -158,14 +159,14 @@ export default {
                 _this.thumb = null
             }
         })
-        axios.get("http://localhost:8181/star_dis/findDiscussion/"+this.userid).then(function (resp){
+        axios.get("http://"+this.server+":8181/star_dis/findDiscussion/"+this.userid).then(function (resp){
             resp.data.reverse()
             for (let i = 0; i < 4; i++){
                 if(i < resp.data.length)
                     _this.starDis.push(resp.data[i])
             }
         })
-        axios.get("http://localhost:8181/thumb_dis/findDiscussion/"+this.userid).then(function (resp){
+        axios.get("http://"+this.server+":8181/thumb_dis/findDiscussion/"+this.userid).then(function (resp){
             resp.data.reverse()
             for (let i = 0; i < 4; i++){
                 if(i < resp.data.length)
@@ -184,7 +185,7 @@ export default {
             const _this = this
             this.form.discussionid = this.$route.query.discussionid
             this.form.authorID = JSON.parse(window.localStorage.getItem('access-admin')).name
-            axios.post("http://localhost:8181/reply/save", this.form).then(function (resp){
+            axios.post("http://"+this.server+":8181/reply/save", this.form).then(function (resp){
                 if(resp.data != null){
                     alert("发布成功！")
                     window.location.reload()
@@ -203,12 +204,12 @@ export default {
             this.$router.go(0)
         },
         staron(){
-            axios.post("http://localhost:8181/star_dis/star/" + this.$route.query.discussionid+"/" + this.userid).then(function (resp){
+            axios.post("http://"+this.server+":8181/star_dis/star/" + this.$route.query.discussionid+"/" + this.userid).then(function (resp){
 
             })
         },
         staroff(){
-            axios.post("http://localhost:8181/star_dis/staroff/" + this.$route.query.discussionid+"/" + this.userid).then(function (resp){
+            axios.post("http://"+this.server+":8181/star_dis/staroff/" + this.$route.query.discussionid+"/" + this.userid).then(function (resp){
 
             })
         },
@@ -224,12 +225,12 @@ export default {
             this.$router.go(0)
         },
         thumbon(){
-            axios.post("http://localhost:8181/thumb_dis/thumb/" + this.$route.query.discussionid+"/" + this.userid).then(function (resp){
+            axios.post("http://"+this.server+":8181/thumb_dis/thumb/" + this.$route.query.discussionid+"/" + this.userid).then(function (resp){
 
             })
         },
         thumboff(){
-            axios.post("http://localhost:8181/thumb_dis/thumboff/" + this.$route.query.discussionid+"/" + this.userid).then(function (resp){
+            axios.post("http://"+this.server+":8181/thumb_dis/thumboff/" + this.$route.query.discussionid+"/" + this.userid).then(function (resp){
 
             })
         },

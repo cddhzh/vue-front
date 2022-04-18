@@ -49,6 +49,7 @@
                             <p align="left">{{good.description}}</p>
                         </el-collapse-item>
                         <el-collapse-item title="商品链接" name="2">
+                            <p align="left">{{good.url}}</p>
                         </el-collapse-item>
                     </el-collapse>
                     <el-card v-show="this.visible">
@@ -95,6 +96,7 @@ export default {
     name: "Good",
     data() {
         return {
+            server: '106.14.37.85',
             visible: false,
             activeNames: ['1','2'],
             good: {},
@@ -113,10 +115,10 @@ export default {
     },
     created() {
         const _this = this
-        axios.get("http://localhost:8181/good/findById/"+this.$route.query.goodid).then(function (resp){
+        axios.get("http://"+this.server+":8181/good/findById/"+this.$route.query.goodid).then(function (resp){
             _this.good = resp.data
         })
-        axios.get('http://localhost:8181/star_good/findById/'+this.$route.query.goodid+'/'+this.userid).then(function (resp){
+        axios.get('http://'+this.server+':8181/star_good/findById/'+this.$route.query.goodid+'/'+this.userid).then(function (resp){
             if(resp.data){
                 _this.star = "primary"
             }
@@ -124,7 +126,7 @@ export default {
                 _this.star = null
             }
         })
-        axios.get('http://localhost:8181/thumb_good/findById/'+this.$route.query.goodid+'/'+this.userid).then(function (resp){
+        axios.get('http://'+this.server+':8181/thumb_good/findById/'+this.$route.query.goodid+'/'+this.userid).then(function (resp){
             if(resp.data){
                 _this.thumb = "primary"
             }
@@ -132,7 +134,7 @@ export default {
                 _this.thumb = null
             }
         })
-        axios.get("http://localhost:8181/good_reply/findByGoodid/"+this.$route.query.goodid).then(function (resp){
+        axios.get("http://"+this.server+":8181/good_reply/findByGoodid/"+this.$route.query.goodid).then(function (resp){
             _this.replys = resp.data
         })
     },
@@ -154,12 +156,12 @@ export default {
             }
         },
         staron(){
-            axios.post("http://localhost:8181/star_good/star/" + this.$route.query.goodid+"/" + this.userid).then(function (resp){
+            axios.post("http://"+this.server+":8181/star_good/star/" + this.$route.query.goodid+"/" + this.userid).then(function (resp){
 
             })
         },
         staroff(){
-            axios.post("http://localhost:8181/star_good/staroff/" + this.$route.query.goodid+"/" + this.userid).then(function (resp){
+            axios.post("http://"+this.server+":8181/star_good/staroff/" + this.$route.query.goodid+"/" + this.userid).then(function (resp){
 
             })
         },
@@ -174,12 +176,12 @@ export default {
             }
         },
         thumbon(){
-            axios.post("http://localhost:8181/thumb_good/thumb/" + this.$route.query.goodid+"/" + this.userid).then(function (resp){
+            axios.post("http://"+this.server+":8181/thumb_good/thumb/" + this.$route.query.goodid+"/" + this.userid).then(function (resp){
 
             })
         },
         thumboff(){
-            axios.post("http://localhost:8181/thumb_good/thumboff/" + this.$route.query.goodid+"/" + this.userid).then(function (resp){
+            axios.post("http://"+this.server+":8181/thumb_good/thumboff/" + this.$route.query.goodid+"/" + this.userid).then(function (resp){
 
             })
         },
@@ -187,7 +189,7 @@ export default {
             const _this = this
             this.form.goodid = this.$route.query.goodid
             this.form.time = new Date()
-            axios.post("http://localhost:8181/good_reply/save", this.form).then(function (resp){
+            axios.post("http://"+this.server+":8181/good_reply/save", this.form).then(function (resp){
                 if(resp.data != null){
                     alert("发布成功！")
                     window.location.reload()

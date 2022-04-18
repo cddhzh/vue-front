@@ -25,7 +25,7 @@
                     </el-aside>
                 </el-container>
             </el-card>
-            <el-empty description="暂无评论" v-if="isEmpty"></el-empty>
+            <el-empty description="暂无问题" v-if="isEmpty"></el-empty>
 <!--            <el-table :data="tableData" :stripe="true" style="width: 100%" @row-click="handleClick" :cell-style="cellStyle">-->
 <!--                <el-table-column ><el-avatar size="small" :src="circleUrl"></el-avatar></el-table-column>-->
 <!--                <el-table-column prop="authorID" label="提问者" width="180">-->
@@ -54,6 +54,7 @@ export default {
     },
     data() {
         return{
+            server: "106.14.37.85",
             isEmpty: true,
             total: null,
             pagesize: 3,
@@ -74,7 +75,7 @@ export default {
         page(currentPage){
             const _this = this
             let id = this.id
-            axios.get("http://localhost:8181/discussion/findBySubjectID/"+id+"/"+currentPage+"/"+this.pagesize).then(function (resp){
+            axios.get("http://"+this.server+":8181/discussion/findBySubjectID/"+id+"/"+currentPage+"/"+this.pagesize).then(function (resp){
                 _this.tableData = resp.data.content
                 _this.ids = []
                 _this.titles = []
@@ -109,7 +110,7 @@ export default {
     created() {
         const _this = this
         let id = this.id
-        axios.get("http://localhost:8181/discussion/findBySubjectID/"+id+"/1/"+this.pagesize).then( function(resp){
+        axios.get("http://"+this.server+":8181/discussion/findBySubjectID/"+id+"/1/"+this.pagesize).then( function(resp){
             _this.tableData = resp.data.content
             _this.total = resp.data.totalElements
             for (let i = 0; i < resp.data.content.length; i++) {

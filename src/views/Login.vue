@@ -31,7 +31,7 @@
             <!--<el-form-item style="width:100%;">-->
             <!--<el-button type="info" style="width:100%;" @click="handleRegister" :loading="registering">注册</el-button>-->
             <!--</el-form-item>-->
-            <a href="/register">注册</a>
+            <router-link to="/register">注册</router-link>
         </el-form>
     </div>
 </template>
@@ -61,40 +61,11 @@ export default {
 
     },
     methods: {
-        // handleSubmit(){
-        //     this.$refs.ruleForm2.validate((valid) => {
-        //         if(valid){
-        //             let _this = this
-        //             axios.get('http://localhost:8181/user/find',{params:_this.ruleForm2}).then(function (resp) {
-        //                 if(resp.data!=""){
-        //                     alert("成功")
-        //                     //sessionStorage.setItem('username',_this.ruleForm2.userName)
-        //                     _this.user.uid = resp.data.id
-        //                     _this.user.name = resp.data.account
-        //                     _this.user.school = resp.data.school
-        //                     _this.user.token = resp.data.token
-        //                     _this.user.avatar = resp.data.avatar
-        //                     localStorage.setItem('access-admin',JSON.stringify(_this.user))
-        //                     _this.$router.push({path:'/'})
-        //                     _this.$router.go(0)
-        //                 }else if(resp.data!=null){
-        //                     alert("fail")
-        //                 }else{
-        //                     alert("nobody")
-        //                 }
-        //             })
-        //         }else{
-        //             alert('error submit!');
-        //             return false;
-        //         }
-        //
-        //     })
-        // }
         handleSubmit(){
             this.$refs.ruleForm2.validate((valid) => {
                 if(valid){
                     let _this = this
-                    axios.get('http://localhost:8181/user/find',{params:_this.ruleForm2}).then(function (resp) {
+                    axios.get('http://106.14.37.85:8181/user/find',{params:_this.ruleForm2}).then(function (resp) {
                         if(resp.data!=""){
                             alert("成功")
                             //sessionStorage.setItem('username',_this.ruleForm2.userName)
@@ -103,7 +74,6 @@ export default {
                             _this.user.school = resp.data.school
                             _this.user.token = resp.data.token
                             _this.user.avatar = resp.data.avatar
-                            localStorage.setItem('access-admin1',JSON.stringify(resp.data))
                             localStorage.setItem('access-admin',JSON.stringify(_this.user))
                             _this.$router.push({path:'/'})
                             _this.$router.go(0)

@@ -37,12 +37,13 @@ export default {
     name: "quitAct",
     data(){
         return{
+            server: '106.14.37.85',
             ruleForm:[]
         }
     },
     created(){
         const _this=this
-        axios.get('http://localhost:8181/activity/findById/'+this.$route.query.id).then(function (resp) {
+        axios.get('http://'+this.server+':8181/activity/findById/'+this.$route.query.id).then(function (resp) {
             console.log(resp.data)
             _this.ruleForm = resp.data
         })
@@ -55,7 +56,7 @@ export default {
             const _this=this
             const _uid = JSON.parse(window.localStorage.getItem('access-admin')).uid
             // console.log(_uid+this.$route.query.id)
-            axios.get('http://localhost:8181/actuser/quit/'+_uid+'/'+this.$route.query.id ,{params:_this.ruleForm}).then(function (resp) {
+            axios.get('http://'+this.server+':8181/actuser/quit/'+_uid+'/'+this.$route.query.id ,{params:_this.ruleForm}).then(function (resp) {
                 _this.$alert('活动'+_this.ruleForm.title+'退出成功！',"消息",{
                     confirmButtonText:'确定',
                     callback: action => {

@@ -82,12 +82,12 @@ export default {
     name: "notice",
     created(){
         const _this = this
-        axios.get('http://localhost:8181/notice/findAll/1/'+this.pagesize).then(function (resp) {
+        axios.get('http://'+this.server+':8181/notice/findAll/1/'+this.pagesize).then(function (resp) {
             console.log(resp)
             _this.tableData = resp.data.content
             _this.total = resp.data.totalElements
         })
-        axios.get('http://localhost:8181/school/findAll').then(function (response) {
+        axios.get('http://'+this.server+':8181/school/findAll').then(function (response) {
             // console.log(response.data)
             _this.schoolOptions = response.data
             // _this.total = response.data.totalElements
@@ -97,7 +97,7 @@ export default {
     methods:{
         page(currentPage){
             const _this = this
-            axios.get('http://localhost:8181/notice/findById/'+currentPage+'/'+_this.pagesize,{params:_this.formInline}).then(function (resp) {
+            axios.get('http://'+this.server+':8181/notice/findById/'+currentPage+'/'+_this.pagesize,{params:_this.formInline}).then(function (resp) {
                 // console.log(resp)
                 _this.tableData = resp.data.content
                 _this.total = resp.data.totalElements
@@ -110,7 +110,7 @@ export default {
         Search(){
             const _this=this
             console.log(_this.formInline)
-            axios.get('http://localhost:8181/notice/findById/1/'+this.pagesize,{params:_this.formInline}).then(function (response) {
+            axios.get('http://'+this.server+':8181/notice/findById/1/'+this.pagesize,{params:_this.formInline}).then(function (response) {
                 console.log(_this.formInline)
                 console.log(response.data)
                 _this.tableData = response.data.content
@@ -121,6 +121,7 @@ export default {
     },
     data() {
         return {
+            server: '106.14.37.85',
             total: null,
             tableData: null,
             total_page: null,

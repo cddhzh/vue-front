@@ -4,9 +4,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/element.js'
-import AddActivity from "./views/AddActivity";
-import Login from "./views/Login";
-import Register from "./views/Register";
 import moment from 'moment'
 Vue.prototype.$moment = moment
 
@@ -19,7 +16,7 @@ new Vue({
 }).$mount('#app')
 
 router.beforeEach((to, from, next) => {
-  if (to.path.startsWith('/login')) {
+  if (to.path.startsWith('/login')||to.path.startsWith('/register')) {
     window.localStorage.removeItem('access-admin')
     next()
   } else {
@@ -28,7 +25,7 @@ router.beforeEach((to, from, next) => {
       next({path:'/login'})
     } else {
       axios({
-        url:'http://localhost:8181/user/checkToken',
+        url:'http://106.14.37.85:8181/user/checkToken',
         method:'get',
         headers:{
           token:admin.token

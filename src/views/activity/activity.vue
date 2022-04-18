@@ -257,12 +257,12 @@ export default {
     name: "activity",
     created(){
         const _this = this
-        axios.get('http://localhost:8181/activity/findAll/1/'+this.pagesize).then(function (resp) {
+        axios.get('http://'+this.server+':8181/activity/findAll/1/'+this.pagesize).then(function (resp) {
             console.log(resp)
             _this.tableData = resp.data.content
             _this.total = resp.data.totalElements
         })
-        axios.get('http://localhost:8181/acttype/findAll').then(function (response) {
+        axios.get('http://'+this.server+':8181/acttype/findAll').then(function (response) {
             // console.log(response.data)
             _this.actOptions = response.data
             // _this.total = response.data.totalElements
@@ -276,7 +276,7 @@ export default {
             // if(_this.formInline.range==undefined)_this.formInline.range="*";
             if(_this.formInline.state==undefined)alert("请选择状态");
             // if(_this.formInline.state==undefined)_this.formInline.state="*";
-            axios.get('http://localhost:8181/activity/findAll/1/'+this.pagesize+'/'+_this.formInline.range+'/'
+            axios.get('http://'+this.server+':8181/activity/findAll/1/'+this.pagesize+'/'+_this.formInline.range+'/'
                 +_this.formInline.state).then(function (resp) {
                 // console.log(resp)
                 _this.tableData = resp.data.content
@@ -286,7 +286,7 @@ export default {
         },
         page(currentPage){
             const _this = this
-            axios.get('http://localhost:8181/activity/findAll/'+currentPage+'/'+this.pagesize).then(function (resp) {
+            axios.get('http://'+this.server+':8181/activity/findAll/'+currentPage+'/'+this.pagesize).then(function (resp) {
                 // console.log(resp)
                 _this.tableData = resp.data.content
                 _this.total = resp.data.totalElements
@@ -296,7 +296,7 @@ export default {
             if(row.state=="报名中"){
                 const _this = this;
                 const _uid = JSON.parse(window.localStorage.getItem('access-admin')).uid;
-                axios.get('http://localhost:8181/actuser/findByUidAndActId/'+_uid+'/'+row.id).then(function (resp) {
+                axios.get('http://'+this.server+':8181/actuser/findByUidAndActId/'+_uid+'/'+row.id).then(function (resp) {
                     console.log(resp)
                     if(resp.data=='不存在'){
                         _this.$router.push({
@@ -356,7 +356,7 @@ export default {
                 alert("请完善活动")
             }
             else{
-                axios.get('http://localhost:8181/activity/addAct/'+_this.form.title+'/'+_this.form.content+'/'+_uname+
+                axios.get('http://'+this.server+':8181/activity/addAct/'+_this.form.title+'/'+_this.form.content+'/'+_uname+
                     '/'+_this.form.location+'/'+_this.form.range+'/'+_this.form.amount+'/'+_this.form1.acttype+'/'+
                     _this.form1.join_start+'/'+_this.form1.join_end+'/'+_this.form1.act_start+'/'+
                     _this.form1.act_end).then(function (resp) {
@@ -373,7 +373,7 @@ export default {
                     }
                 })
             }
-            // axios.get('http://localhost:8181/activity/addAct/'+_this.form.title+'/'+_this.form.content+'/'+_uname+
+            // axios.get('http://'+this.server+':8181/activity/addAct/'+_this.form.title+'/'+_this.form.content+'/'+_uname+
             // '/'+_this.form.location+'/'+_this.form.time+'/'+_this.form.amount).then(function (resp) {
             //     console.log(resp)
             //     if(resp.data == 'success'){
@@ -468,6 +468,7 @@ export default {
     },
     data(){
         return {
+            server: '106.14.37.85',
             total: null,
             tableData: [],
             total_page: null,

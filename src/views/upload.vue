@@ -3,11 +3,12 @@
         <el-upload
             ref="upload"
             class="avatar-uploader"
-            :auto-upload="false"
-            action="http://localhost:8181/upload/file/avatar"
+            :on-progress="handleProgress"
+            action="http://106.14.37.85:8181/upload/file/avatar"
             :show-file-list="false"
             :on-change="handleChange"
             :on-success="handleAvatarSuccess"
+            :on-error="handleError"
             :before-upload="beforeAvatarUpload">
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -16,7 +17,7 @@
         <el-upload
             class="upload-demo"
             ref="upload"
-            action="http://localhost:8181/upload/file/avatar"
+            action="http://106.14.37.85:8181/upload/file/avatar"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :on-success="handleAvatarListSuccess"
@@ -66,24 +67,27 @@ export default {
         };
     },
     methods: {
+        handleProgress(event, file){
+            console.log(event)
+        },
+        handleError(err, file){
+            console.log(err)
+        },
         handleAvatarSuccess(res, file) {
             this.imageUrl = URL.createObjectURL(file.raw);
+            console.log(res)
         },
         handleAvatarListSuccess(res, fileList) {
             this.imgUrls += (res + " ")
             console.log(this.imgUrls)
         },
         beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg';
             const isLt2M = file.size / 1024 / 1024 < 2;
 
-            if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
-            }
             if (!isLt2M) {
                 this.$message.error('上传头像图片大小不能超过 2MB!');
             }
-            return isJPG && isLt2M;
+            return isLt2M;
         },
         handleChange(file, fileList){
             this.imageUrl = URL.createObjectURL(file.raw);

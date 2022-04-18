@@ -7,7 +7,7 @@
                         ref="upload"
                         class="avatar-uploader"
                         :auto-upload="false"
-                        action="http://localhost:8181/upload/file/avatar"
+                        :action="'http://'+this.server+':8181/upload/file/avatar'"
                         :show-file-list="false"
                         :on-change="handleChange"
                         :on-success="handleAvatarSuccess"
@@ -128,6 +128,7 @@ export default {
             }
         };
         return {
+            server: '106.14.37.85',
             ruleForm: {
                 name: '',
                 phone: '',
@@ -187,16 +188,16 @@ export default {
     },
     created() {
         const _this = this
-        axios.get('http://localhost:8181/school/findAll').then( function (resp){
+        axios.get('http://'+_this.server+':8181/school/findAll').then( function (resp){
             _this.schools = resp.data;
         })
-        axios.get('http://localhost:8181/user/findAllPhone').then(function (resp){
+        axios.get('http://'+_this.server+':8181/user/findAllPhone').then(function (resp){
             _this.phones = resp.data
         })
-        axios.get('http://localhost:8181/user/findAllAccount').then(function (resp){
+        axios.get('http://'+_this.server+':8181/user/findAllAccount').then(function (resp){
             _this.accounts = resp.data
         })
-        axios.get('http://localhost:8181/user/findAllStuID').then(function (resp){
+        axios.get('http://'+_this.server+':8181/user/findAllStuID').then(function (resp){
             _this.stuIDs = resp.data
         })
     },
@@ -206,7 +207,7 @@ export default {
             this.$refs.upload.submit();
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    axios.post('http://localhost:8181/user/save/', _this.ruleForm).then(function (resp){
+                    axios.post('http://'+_this.server+':8181/user/save/', _this.ruleForm).then(function (resp){
                         _this.$router.push({path: "/login"})
                     })
                 } else {
@@ -220,7 +221,7 @@ export default {
         },
         getAcademys(formName) {
             const _this = this
-            axios.get('http://localhost:8181/academy/findBySchool/'+this.ruleForm.school).then(function (resp){
+            axios.get('http://'+_this.server+':8181/academy/findBySchool/'+this.ruleForm.school).then(function (resp){
                 _this.academys = resp.data
             })
         },
@@ -229,16 +230,11 @@ export default {
             console.log(this.ruleForm.avatar)
         },
         beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg';
             const isLt2M = file.size / 1024 / 1024 < 2;
-
-            if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
-            }
             if (!isLt2M) {
                 this.$message.error('上传头像图片大小不能超过 2MB!');
             }
-            return isJPG && isLt2M;
+            return isLt2M;
         },
         handleChange(file, fileList){
             this.imageUrl = URL.createObjectURL(file.raw);

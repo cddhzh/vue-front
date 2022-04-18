@@ -25,7 +25,7 @@
                     </el-aside>
                 </el-container>
             </el-card>
-            <el-empty description="暂无评论" v-if="isEmpty"></el-empty>
+            <el-empty description="暂无问题" v-if="isEmpty"></el-empty>
         </el-main>
         <el-footer>
             <el-pagination
@@ -46,6 +46,7 @@ export default {
     name: "All",
     data() {
         return{
+            server: "106.14.37.85",
             total: null,
             pagesize: 3,
             tableData: [],
@@ -65,7 +66,7 @@ export default {
     methods: {
         page(currentPage){
             const _this = this
-            axios.get("http://localhost:8181/discussion/findAll/"+currentPage+"/"+this.pagesize).then(function (resp){
+            axios.get("http://"+this.server+":8181/discussion/findAll/"+currentPage+"/"+this.pagesize).then(function (resp){
                 _this.tableData = resp.data.content
                 _this.total = resp.data.totalElements
                 _this.ids = []
@@ -100,7 +101,7 @@ export default {
     },
     created() {
         const _this = this
-        axios.get("http://localhost:8181/discussion/findAll/1/"+this.pagesize).then(function (resp){
+        axios.get("http://"+this.server+":8181/discussion/findAll/1/"+this.pagesize).then(function (resp){
             _this.tableData = resp.data.content
             _this.total = resp.data.totalElements
             for (let i = 0; i < resp.data.content.length; i++) {

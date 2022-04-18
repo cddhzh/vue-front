@@ -28,6 +28,7 @@ export default {
     name: "Goods",
     data() {
         return {
+            server: '106.14.37.85',
             good: {
                 id: [],
                 names: [],
@@ -44,7 +45,7 @@ export default {
     },
     created() {
         const _this = this
-        axios.get('http://localhost:8181/good/findAll').then( function (resp){
+        axios.get('http://'+this.server+':8181/good/findAll').then( function (resp){
             resp.data.reverse()
             for (let i = 0; i < resp.data.length; i++) {
                 _this.good.id.push(resp.data[i].id)

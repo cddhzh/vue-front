@@ -26,20 +26,24 @@
                             v-model="form.goodimgs"
                             ref="upload"
                             class="upload-demo"
-                            action="http://localhost:8181/upload/file/good"
+                            :action="'http://'+this.server+':8181/upload/file/good'"
                             :on-preview="handlePreview"
                             :on-remove="handleRemove"
                             :auto-upload="false"
                             :file-list="fileList"
                             :on-success="handleSuccess"
                             list-type="picture">
-                            <el-button size="small" type="primary">点击上传</el-button>
-                            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                            <el-button size="small" type="primary">选择图片</el-button>
 <!--                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
                         </el-upload>
+                        <el-tooltip effect="dark" content="将所选图片上传至服务器" placement="bottom">
+                            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                        </el-tooltip>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit('form')">立即发布</el-button>
+                        <el-tooltip effect="dark" content="请先点击上传服务器按钮将图片上传" placement="bottom" >
+                            <el-button type="primary" @click="onSubmit('form')">立即发布</el-button>
+                        </el-tooltip>
                         <el-button @click="cancel">取消</el-button>
                     </el-form-item>
                 </el-form>
@@ -53,6 +57,7 @@
 export default {
     data(){
         return{
+            server: '106.14.37.85',
             form: {
                 id: '',
                 goodname: '',
@@ -93,11 +98,12 @@ export default {
                 if (valid) {
                     _this.form.ownerid = JSON.parse(window.localStorage.getItem('access-admin')).name
                     _this.form.time = new Date();
-                    axios.post('http://localhost:8181/good/save/', _this.form).then(function (resp){
+                    console.log(_this.form)
+                    axios.post('http://'+this.server+':8181/good/save/', _this.form).then(function (resp){
                         console.log(resp)
                     })
-                    // alert('发布成功！');
-                    // _this.$router.push({path: '/transaction/goods'})
+                    alert('发布成功！');
+                    _this.$router.push({path: '/transaction/goods'})
                     // window.location.reload()
                 } else {
                     console.log('error submit!!');
@@ -109,14 +115,14 @@ export default {
             this.$router.push({path: "/transaction/goods"})
         },
         handleRemove(file, fileList) {
-            console.log(file, fileList);
+            //console.log(file, fileList);
         },
         handlePreview(file) {
-            console.log(file);
+            //console.log(file);
         },
         handleSuccess(res, fileList){
             this.form.goodimgs += (res + " ")
-            console.log(this.form.goodimgs)
+            //console.log(this.form.goodimgs)
         }
     }
 }

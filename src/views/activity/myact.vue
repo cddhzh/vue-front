@@ -79,7 +79,7 @@ export default {
     name: "myact",
     created(){
         const _this=this
-        axios.get('http://localhost:8181/activity/findByUser/'+_this.uid+'/1/3/').then(function (resp) {
+        axios.get('http://'+this.server+':8181/activity/findByUser/'+_this.uid+'/1/3/').then(function (resp) {
             // console.log(resp)
             _this.tableData = resp.data.content
             _this.total = resp.data.totalElements
@@ -87,7 +87,7 @@ export default {
     },
     page(currentPage){
         const _this = this
-        axios.get('http://localhost:8181/activity/findByUser/'+uid+'/'+currentPage+'/3/').then(function (resp) {
+        axios.get('http://'+this.server+':8181/activity/findByUser/'+uid+'/'+currentPage+'/3/').then(function (resp) {
             // console.log(resp)
             _this.tableData = resp.data.content
             _this.total = resp.data.totalElements
@@ -107,6 +107,7 @@ export default {
     },
     data(){
         return{
+            server: '106.14.37.85',
             total: null,
             tableData: [],
             total_page: null,
